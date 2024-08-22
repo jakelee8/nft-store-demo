@@ -9,6 +9,7 @@ services:
     environment:
       # Apps
       DATABASE_URL: postgresql://postgres:postgres@postgres/postgres?sslmode=disable
+      NEXT_TELEMETRY_DISABLED: 1
 
       # PostgreSQL psql client
       PGHOST: postgres
