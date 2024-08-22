@@ -10,6 +10,7 @@ services:
       # Apps
       DATABASE_URL: postgresql://postgres:postgres@postgres/postgres?sslmode=disable
       NEXT_TELEMETRY_DISABLED: 1
+      NODE_ENV: development
 
       # PostgreSQL psql client
       PGHOST: postgres
