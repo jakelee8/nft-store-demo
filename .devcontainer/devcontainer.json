@@ -1,0 +1,37 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+{
+  "name": "nft-store",
+
+  "dockerComposeFile": "docker-compose.yaml",
+  "service": "nft-store",
+  "workspaceFolder": "/workspaces/nft-store",
+  "remoteUser": "vscode",
+
+  // Use `forwardPorts` to make a list of ports inside the container available
+  // locally. This can be used to network with other containers or the host.
+  "forwardPorts": [],
+
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "apollographql.vscode-apollo",
+        "bierner.markdown-mermaid",
+        "bradlc.vscode-tailwindcss",
+        "dotenv.dotenv-vscode",
+        "esbenp.prettier-vscode",
+        "fill-labs.dependi",
+        "foxundermoon.shell-format",
+        "ms-azuretools.vscode-docker",
+        "mtxr.sqltools"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.inlineSuggest.enabled": true,
+        "files.autoSave": "afterDelay",
+        "prettier.prettierPath": "/usr/local/lib/node_modules/prettier",
+        "shellformat.path": "/usr/bin/shfmt"
+      }
+    }
+  }
+}

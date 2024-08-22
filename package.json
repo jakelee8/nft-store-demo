@@ -1,0 +1,8 @@
+{
+  "name": "nft-store",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "private": true
+}
