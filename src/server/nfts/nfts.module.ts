@@ -3,10 +3,12 @@ import { OpenSeaSDK, Chain } from "opensea-js";
 import { Module } from "@nestjs/common";
 
 import { NftsResolver } from "./nfts.resolver";
+import { NftsService } from "./nfts.service";
 
 @Module({
   providers: [
     NftsResolver,
+    NftsService,
     {
       provide: "OPENSEA_SDK",
       useFactory: () => {
