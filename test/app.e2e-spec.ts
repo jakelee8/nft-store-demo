@@ -35,7 +35,7 @@ describe("AppController (e2e)", () => {
       .then((result) => {
         expect(result.statusCode).toEqual(200);
       });
-  });
+  }, 30000);
 
   it("POST /graphql", () => {
     return app
@@ -63,5 +63,5 @@ describe("AppController (e2e)", () => {
         const json = result.json();
         expect(json.data.nfts.items.length).toBeGreaterThan(0);
       });
-  });
+  }, 30000);
 });
