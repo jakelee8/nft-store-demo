@@ -1,9 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  Module,
-  OnApplicationShutdown,
-} from "@nestjs/common";
+import { Injectable, OnApplicationShutdown } from "@nestjs/common";
 import next from "next";
 import { NextServer, type RequestHandler } from "next/dist/server/next";
 

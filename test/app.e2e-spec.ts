@@ -44,11 +44,16 @@ describe("AppController (e2e)", () => {
         url: "/graphql",
         body: {
           query: `{
-            nfts {
-              id
-              name
-              imageUrl
-              price
+            nfts(slug: "creatureworld") {
+              items {
+                id
+                name
+                description
+                price
+                imageUrl
+                openSeaUrl
+              }
+              nextPageToken
             }
           }`,
         },
@@ -56,7 +61,7 @@ describe("AppController (e2e)", () => {
       .then((result) => {
         expect(result.statusCode).toEqual(200);
         const json = result.json();
-        expect(json.data.nfts.length).toEqual(0);
+        expect(json.data.nfts.items.length).toBeGreaterThan(0);
       });
   });
 });

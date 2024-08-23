@@ -1,11 +1,21 @@
 type Query {
-  nfts: [Nft!]!
+  # List NFTs by collection slug (OpenSea).
+  nfts(slug: String!, limit: Int, pageToken: String): NftCollection!
+
+  # Get an NFT by ID.
   nft(id: ID!): Nft
 }
 
 type Nft {
   id: String!
   name: String!
-  imageUrl: String!
+  description: String!
   price: String!
+  imageUrl: String!
+  openSeaUrl: String!
+}
+
+type NftCollection {
+  items: [Nft!]!
+  nextPageToken: String!
 }

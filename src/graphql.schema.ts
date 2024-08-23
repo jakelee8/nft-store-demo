@@ -9,7 +9,7 @@
 /* eslint-disable */
 
 export abstract class IQuery {
-    abstract nfts(): Nft[] | Promise<Nft[]>;
+    abstract nfts(slug: string, limit?: Nullable<number>, pageToken?: Nullable<string>): NftCollection | Promise<NftCollection>;
 
     abstract nft(id: string): Nullable<Nft> | Promise<Nullable<Nft>>;
 }
@@ -17,8 +17,15 @@ export abstract class IQuery {
 export class Nft {
     id: string;
     name: string;
-    imageUrl: string;
+    description: string;
     price: string;
+    imageUrl: string;
+    openSeaUrl: string;
+}
+
+export class NftCollection {
+    items: Nft[];
+    nextPageToken: string;
 }
 
 type Nullable<T> = T | null;
