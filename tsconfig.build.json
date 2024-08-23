@@ -6,8 +6,7 @@
   "exclude": [
     "node_modules",
     "src/app/**/*",
-    "src/client/**/*",
-    "src/pages/**/*",
+    "src/components/**/*",
     "test",
     "dist",
     "**/*spec.ts"
