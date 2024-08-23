@@ -4,9 +4,10 @@
     "noEmit": false
   },
   "exclude": [
+    ".next",
     "node_modules",
-    "src/app/**/*",
-    "src/components/**/*",
+    "src/app",
+    "src/components",
     "test",
     "dist",
     "**/*spec.ts"

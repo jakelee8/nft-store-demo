@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 export interface Nft {
   id: number;
   name: string;
@@ -14,7 +12,7 @@ const NftCard: React.FC<{ nft: Nft; addToCart: (nft: Nft) => void }> = ({
   addToCart,
 }) => (
   <div className="border rounded-lg p-4">
-    <Image
+    <img
       src={nft.image}
       alt={nft.name}
       width={200}

@@ -16,8 +16,8 @@ const Home: React.FC = () => {
   const nfts: Nft[] = Array.from({ length: 50 }, (_, i) => ({
     id: i + 1,
     name: `NFT #${i + 1}`,
-    image: `/api/placeholder/200/200?text=NFT${i + 1}`,
-    price: Math.random() * 10 + 0.1,
+    image: `https://via.placeholder.com/200x200.png?text=NFT${i + 1}`,
+    price: (i + 1) * 10.1,
   }));
 
   const itemsPerPage = 12;

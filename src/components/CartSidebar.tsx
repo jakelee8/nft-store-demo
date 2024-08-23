@@ -1,5 +1,4 @@
 import { Dialog, DialogTitle, Transition } from "@headlessui/react";
-import Image from "next/image";
 import React from "react";
 
 import { Nft } from "./NftCard";
@@ -38,7 +37,7 @@ const CartSidebar: React.FC<{
                       {cartItems.map((item) => (
                         <li key={item.id} className="py-6 flex">
                           <div className="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
-                            <Image
+                            <img
                               src={item.image}
                               alt={item.name}
                               width={96}

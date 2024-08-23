@@ -1,7 +1,6 @@
 "use client";
 
 import { ShoppingCartIcon, WalletIcon } from "lucide-react";
-import Image from "next/image";
 
 const Navbar: React.FC<{ isConnected: boolean; toggleCart: () => void }> = ({
   isConnected,
@@ -9,8 +8,13 @@ const Navbar: React.FC<{ isConnected: boolean; toggleCart: () => void }> = ({
 }) => (
   <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
     <div className="flex items-center">
-      <Image src="/logo.png" alt="Logo" width={40} height={40} />
-      <span className="ml-2 text-xl font-bold">NFT Marketplace</span>
+      <img
+        src={`https://via.placeholder.com/200x200.png?text=NFT`}
+        alt="Logo"
+        width={40}
+        height={40}
+      />
+      <span className="ml-2 text-xl font-bold">NFT Store</span>
     </div>
     <button
       onClick={toggleCart}
