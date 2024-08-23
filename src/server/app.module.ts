@@ -1,21 +1,26 @@
-import { Module } from "@nestjs/common";
-import next from "next";
+import { join } from "path";
 
-import { AppController } from "./app.controller";
+import { Module } from "@nestjs/common";
+import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
+import { GraphQLModule } from "@nestjs/graphql";
+
+import { NextjsModule } from "./nextjs.module";
+import { NftsModule } from "./nfts/nfts.module";
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [
-    {
-      provide: "NEXTJS_HANDLER",
-      useFactory: async () => {
-        const dev = process.env.NODE_ENV === "development";
-        const app = next({ dev });
-        await app.prepare();
-        return app.getRequestHandler();
+  imports: [
+    NextjsModule,
+    NftsModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      typePaths: ["./**/*.graphql"],
+      definitions: {
+        path: join(process.cwd(), "src/graphql.schema.ts"),
+        outputAs: "class",
       },
-    },
+    }),
   ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

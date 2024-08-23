@@ -1,24 +1,62 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { INestApplication } from "@nestjs/common";
-import { default as request } from "supertest";
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from "@nestjs/platform-fastify";
+import { Test } from "@nestjs/testing";
+
 import { AppModule } from "../src/server/app.module";
 
 describe("AppController (e2e)", () => {
-  let app: INestApplication;
+  let app: NestFastifyApplication;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
+    app = moduleRef.createNestApplication<NestFastifyApplication>(
+      new FastifyAdapter()
+    );
+
     await app.init();
+    await app.getHttpAdapter().getInstance().ready();
   });
 
-  it("/ (GET)", () => {
-    return request(app.getHttpServer())
-      .get("/")
-      .expect(200)
-      .expect("Hello World!");
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it("GET /", () => {
+    return app
+      .inject({
+        method: "GET",
+        url: "/",
+      })
+      .then((result) => {
+        expect(result.statusCode).toEqual(200);
+      });
+  });
+
+  it("POST /graphql", () => {
+    return app
+      .inject({
+        method: "POST",
+        url: "/graphql",
+        body: {
+          query: `{
+            nfts {
+              id
+              name
+              imageUrl
+              price
+            }
+          }`,
+        },
+      })
+      .then((result) => {
+        expect(result.statusCode).toEqual(200);
+        const json = result.json();
+        expect(json.data.nfts.length).toEqual(0);
+      });
   });
 });

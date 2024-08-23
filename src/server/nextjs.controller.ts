@@ -1,11 +1,12 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import { Controller, Get, Inject, Next, Req, Res } from "@nestjs/common";
-import type { RequestHandler } from "next/dist/server/next";
 import { parse } from "url";
 
+import { NextjsService } from "./nextjs.service";
+
 @Controller()
-export class AppController {
-  constructor(@Inject("NEXTJS_HANDLER") private handler: RequestHandler) {}
+export class NextjsController {
+  constructor(@Inject("NEXTJS_SERVICE") private server: NextjsService) {}
 
   @Get("*")
   getIndex(
@@ -14,6 +15,6 @@ export class AppController {
     @Next() next: () => void
   ) {
     const parsedUrl = parse(req.url!, true);
-    this.handler(req.raw, res.raw, parsedUrl).then(next);
+    this.server.getHandler()(req.raw, res.raw, parsedUrl).then(next);
   }
 }
