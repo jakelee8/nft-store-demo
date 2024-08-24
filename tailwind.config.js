@@ -14,5 +14,8 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require("@headlessui/tailwindcss")],
+  plugins: [
+    require("daisyui"),
+    require("@iconify/tailwind").addDynamicIconSelectors(),
+  ],
 };
