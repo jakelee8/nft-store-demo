@@ -9,7 +9,7 @@
 
   // Use `forwardPorts` to make a list of ports inside the container available
   // locally. This can be used to network with other containers or the host.
-  "forwardPorts": [],
+  "forwardPorts": [3000],
 
   // Configure tool-specific properties.
   "customizations": {
