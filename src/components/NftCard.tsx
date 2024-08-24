@@ -1,5 +1,3 @@
-"use client";
-
 export interface Nft {
   id: number;
   name: string;

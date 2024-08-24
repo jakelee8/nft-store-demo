@@ -1,5 +1,3 @@
-"use client";
-
 import { ShoppingCartIcon, WalletIcon } from "lucide-react";
 
 const Navbar: React.FC<{ isConnected: boolean; toggleCart: () => void }> = ({
