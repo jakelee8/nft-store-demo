@@ -13,12 +13,19 @@ const NftStore: FC<{
   setCart: (newCart: Cart | ((currentCart: Cart) => Cart)) => void;
 }> = ({ listings, cart, setCart }) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [showCart, setShowCart] = useState(false);
 
   const sidebarId = "cart-sidebar";
 
   return (
     <div class="drawer drawer-end">
-      <input id={sidebarId} type="checkbox" class="drawer-toggle" />
+      <input
+        id={sidebarId}
+        type="checkbox"
+        class="drawer-toggle"
+        checked={showCart}
+        onChange={(e) => setShowCart((e as any).target.checked)}
+      />
       <div class="drawer-content">
         <Navbar sidebarId={sidebarId} cart={cart} />
         <main className="container mx-auto px-4 py-8">
@@ -28,9 +35,15 @@ const NftStore: FC<{
                 key={nftKey(nft)}
                 nft={nft}
                 inCart={cart.hasNft(nft)}
-                addToCart={() =>
-                  setCart((currentCart) => currentCart.addNft(nft))
-                }
+                addToCart={() => {
+                  setCart((currentCart) => {
+                    const cart = currentCart.addNft(nft);
+                    if (!Object.is(cart, currentCart)) {
+                      setShowCart(true);
+                    }
+                    return cart;
+                  });
+                }}
               />
             ))}
           </div>

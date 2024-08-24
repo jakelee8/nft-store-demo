@@ -51,7 +51,10 @@ const CartSidebar: FC<{
         </div>
         <p class="mt-0.5 text-sm">Shipping and taxes calculated at checkout.</p>
         <div class="mt-6">
-          <a href="#" class="btn btn-primary">
+          <a
+            href="#"
+            class={`btn ${cart.nfts.length > 0 ? "btn-primary" : "btn-disabled"}`}
+          >
             Checkout
           </a>
         </div>
