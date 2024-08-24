@@ -16,34 +16,22 @@ Welcome to the NFT Store Web Application! This fullstack project allows users to
 
 ## Tech Stack
 
-### Frontend
+### Isomorphic Application
 
-- Next.js with TypeScript
+- Hono & HonoX
 - Tailwind CSS & HeadlessUI
-- Apollo Client & React Query
-- GraphQL Codegen
-
-### Backend
-
-- NestJS with Fastify
-- GraphQL API
-- TypeORM with PostgreSQL
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-   subgraph Frontend
-   end
+    subgraph Hono
+        Pages[Cloudflare Pages]
+        Browser --> Pages
+    end
 
-   subgraph Backend
-   end
-
-   DB[(PostgreSQL)]
-
-   OpenSea
-
-   Frontend -- GraphQL --> Backend --> OpenSea & DB
+    DB[(Cloudflare D1)]
+    Pages --> DB & OpenSea
 ```
 
 ## Installation
@@ -52,39 +40,29 @@ This project uses a DevContainer for the development environment.
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/your-username/nft-shopping-cart.git
-   cd nft-shopping-cart
+   ```sh
+   git clone https://github.com/jakelee8/nft-store.git
+   cd nft-store
    ```
 
 2. Install dependencies:
 
-   ```bash
+   ```sh
    npm install
    ```
 
-3. Set up the database:
+3. Set up environment variables:
 
-   - Create a PostgreSQL database
+   - Create a `.dev.vars` file
+   - Use `.dev.vars.example` files as a template
 
-4. Set up environment variables:
+4. Start the development server:
 
-   - Create `.env` files in `apps/nft-store-backend` and `apps/nft-store-frontend`
-   - Use `.env.example` files as templates
-
-5. Start development servers:
-
-   ```bash
-   # Backend
-   cd apps/nft-store-backend
-   npm run start:dev
-
-   # Frontend (new terminal)
-   cd apps/nft-store-frontend
+   ```sh
    npm run dev
    ```
 
-6. Open `http://localhost:3000` in your browser
+5. Open `http://localhost:3000` in your browser
 
 ## Usage Guide
 
@@ -100,20 +78,13 @@ Key configuration options:
 
 - `DATABASE_URL`: PostgreSQL connection string (backend)
 - `OPENSEA_API_KEY`: Your OpenSea API key (backend)
-- `NEXT_PUBLIC_API_URL`: GraphQL API endpoint (frontend)
 
-Refer to `.env.example` files for all available options.
+Refer to `.dev.vars.example` files for all available options.
 
 ## Testing
 
 Run tests with:
 
 ```bash
-# Backend
-cd apps/nft-store-backend
-npm test
-
-# Frontend
-cd apps/nft-store-frontend
 npm test
 ```
