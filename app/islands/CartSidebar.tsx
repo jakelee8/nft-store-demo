@@ -26,6 +26,7 @@ const CartSidebar: FC<{
               </div>
               <div class="flex-auto">
                 <p>{nft.name}</p>
+                <p>{nft.currency}</p>
                 <p class="mt-2">
                   <button
                     onClick={() =>
