@@ -8,6 +8,7 @@
     "node_modules",
     "src/app",
     "src/components",
+    "src/graphql",
     "test",
     "dist",
     "**/*spec.ts"

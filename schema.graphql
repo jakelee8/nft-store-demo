@@ -1,0 +1,18 @@
+type Nft {
+  description: String!
+  id: String!
+  imageUrl: String!
+  name: String!
+  openSeaUrl: String!
+  price: String!
+}
+
+type NftCollection {
+  items: [Nft!]!
+  nextPageToken: String!
+}
+
+type Query {
+  nft(id: ID!): Nft
+  nfts(limit: Int, pageToken: String, slug: String!): NftCollection!
+}
