@@ -28,7 +28,11 @@ const NftStore: FC<{ initialNfts: FetchNftCollectionReply }> = ({
         <main className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {nfts.map((nft) => (
-              <NftCard key={nft.id} nft={nft} addToCart={addToCart} />
+              <NftCard
+                key={`${nft.chain}/${nft.token}/${nft.identifier}`}
+                nft={nft}
+                addToCart={addToCart}
+              />
             ))}
           </div>
           <div className="mt-8 flex justify-center">

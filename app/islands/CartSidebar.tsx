@@ -8,7 +8,7 @@ const CartSidebar: FC<{ cartItems: Nft[] }> = ({ cartItems }) => (
 
     <ul role="list">
       {cartItems.map((nft) => (
-        <li key={nft.id}>
+        <li key={`${nft.chain}/${nft.token}/${nft.identifier}`}>
           <div class="flex py-2">
             <div class="flex-none w-24 mr-2">
               <figure>
@@ -36,13 +36,13 @@ const CartSidebar: FC<{ cartItems: Nft[] }> = ({ cartItems }) => (
     </ul>
 
     <div class="border-t border-gray-200 py-6 px-4 sm:px-6">
-      <div class="text-base font-medium text-gray-900">
-        <p>Subtotal</p>
-        <p>{cartItems.reduce((total, item) => total + item.price, 0)} ETH</p>
+      <div class="text-base font-medium">
+        <p>
+          Subtotal {cartItems.reduce((total, item) => total + item.price, 0)}{" "}
+          ETH
+        </p>
       </div>
-      <p class="mt-0.5 text-sm text-gray-500">
-        Shipping and taxes calculated at checkout.
-      </p>
+      <p class="mt-0.5 text-sm">Shipping and taxes calculated at checkout.</p>
       <div class="mt-6">
         <a href="#" class="btn btn-primary">
           Checkout

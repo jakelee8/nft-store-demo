@@ -56,13 +56,19 @@ This project uses a DevContainer for the development environment.
    - Create a `.dev.vars` file
    - Use `.dev.vars.example` files as a template
 
-4. Start the development server:
+4. Apply the Cloudflare D1 database schema:
+
+   ```sh
+   npx wrangler d1 execute nft-store --local --file schema.sql
+   ```
+
+5. Start the development server:
 
    ```sh
    npm run dev
    ```
 
-5. Open `http://localhost:3000` in your browser
+6. Open `http://localhost:3000` in your browser
 
 ## Usage Guide
 

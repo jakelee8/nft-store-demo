@@ -1,7 +1,8 @@
 name = "nft-store"
 compatibility_date = "2024-04-01"
-compatibility_flags = [ "nodejs_compat" ]
+compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "./dist"
+send_metrics = false
 
 # [vars]
 # MY_VAR = "my-variable"
@@ -14,10 +15,11 @@ pages_build_output_dir = "./dist"
 # binding = "MY_BUCKET"
 # bucket_name = "my-bucket"
 
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "my-database"
-# database_id = ""
+[[d1_databases]]
+binding = "DB"
+database_name = "nft-store"
+database_id = "<unique-ID-for-your-database>"
+preview_database_id = "DB"
 
 # [ai]
 # binding = "AI"

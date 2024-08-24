@@ -7,7 +7,9 @@ type Head = {
 declare module "hono" {
   interface Env {
     Variables: {};
-    Bindings: {};
+    Bindings: {
+      DB: D1Database;
+    };
   }
   interface ContextRenderer {
     (

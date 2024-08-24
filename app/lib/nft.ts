@@ -1,5 +1,7 @@
 export interface Nft {
-  id: string;
+  chain: string;
+  token: string;
+  identifier: string;
   name: string;
   price: number;
   currency: string;

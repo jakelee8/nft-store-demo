@@ -27,23 +27,25 @@ export async function fetchNftCollection(
       },
       protocol_data: {
         parameters: {
-          offer: [{ token, identifierOrCriteria }],
+          offer: [{ token, identifierOrCriteria: identifier }],
         },
       },
     } = listing;
 
     const currency = toCurrency(currencySymbol, value, decimals);
 
-    const id = `${token}/${identifierOrCriteria}`;
+    const id = `${chain}/${token}/${identifier}`;
     if (id in nfts) {
       items.push({ ...nfts[id], currency });
     } else {
-      const result = await getNft(c, chain, token, identifierOrCriteria);
+      const result = await getNft(c, chain, token, identifier);
       const {
         nft: { name, image_url, opensea_url },
       } = result;
       items.push({
-        id,
+        chain,
+        token,
+        identifier,
         name,
         price: parseInt(value) / Math.pow(10, decimals),
         currency,
