@@ -1,7 +1,7 @@
 import { zValidator } from "@hono/zod-validator";
 import { createRoute } from "honox/factory";
 import { z } from "zod";
-import { getNftListings } from "../lib/opensea";
+import { getListings } from "../lib/opensea";
 
 export default createRoute(
   zValidator(
@@ -17,11 +17,7 @@ export default createRoute(
 
       result.data.pageToken;
 
-      const listings = await getNftListings(
-        c,
-        undefined,
-        result.data.pageToken
-      );
+      const listings = await getListings(c, undefined, result.data.pageToken);
 
       return c.json(listings);
     }

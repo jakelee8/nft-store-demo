@@ -4,18 +4,25 @@ import Navbar from "./Navbar";
 import NftCard from "../components/NftCard";
 import CartSidebar from "./CartSidebar";
 
-import { Nft, nftKey } from "../lib/nft";
+import { GetNftListingsReply, Listings } from "../lib/listings";
+import { nftKey } from "../lib/nft";
 import { Cart } from "../lib/cart";
 
 const NftStore: FC<{
-  listings: Nft[];
+  listings: GetNftListingsReply;
   cart: Cart;
   setCart: (newCart: Cart | ((currentCart: Cart) => Cart)) => void;
-}> = ({ listings, cart, setCart }) => {
-  const [currentPage, setCurrentPage] = useState(0);
+}> = ({ listings: initialListings, cart, setCart }) => {
+  const [listings, setListings] = useState(initialListings);
   const [showCart, setShowCart] = useState(false);
 
   const sidebarId = "cart-sidebar";
+  const listingsClient = new Listings();
+
+  async function fetchListings(pageToken?: string | undefined) {
+    const newListings = await listingsClient.getListings(pageToken);
+    setListings(newListings);
+  }
 
   return (
     <div class="drawer drawer-end">
@@ -28,9 +35,9 @@ const NftStore: FC<{
       />
       <div class="drawer-content">
         <Navbar sidebarId={sidebarId} cart={cart} />
-        <main className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {listings.map((nft) => (
+        <main class="container mx-auto px-4 py-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {listings.items.map((nft) => (
               <NftCard
                 key={nftKey(nft)}
                 nft={nft}
@@ -47,23 +54,24 @@ const NftStore: FC<{
               />
             ))}
           </div>
-          <div className="mt-8 flex justify-center">
+          <div class="mt-8 flex justify-center">
             <div class="join">
               <button
-                onClick={() => setCurrentPage(0)}
-                className="join-item btn btn-active"
-              >
-                First
-              </button>
-              <button
-                onClick={() => setCurrentPage(0)}
-                className="join-item btn"
+                onClick={() =>
+                  listings.prevPageToken &&
+                  fetchListings(listings.prevPageToken)
+                }
+                class={`join-item btn ${listings.prevPageToken ? "" : "btn-disabled"}`}
               >
                 Prev
               </button>
+
               <button
-                onClick={() => setCurrentPage(0)}
-                className="join-item btn"
+                onClick={() =>
+                  listings.nextPageToken &&
+                  fetchListings(listings.nextPageToken)
+                }
+                class={`join-item btn ${listings.nextPageToken ? "" : "btn-disabled"}`}
               >
                 Next
               </button>

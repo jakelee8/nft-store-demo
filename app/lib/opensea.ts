@@ -1,13 +1,13 @@
 import { Context } from "hono";
 import { env } from "hono/adapter";
 
-import { getNftListingsReply } from "../lib/nft";
+import { GetNftListingsReply } from "../lib/listings";
 
-export async function getNftListings(
+export async function getListings(
   c: Context,
   limit?: number | undefined,
   pageToken?: string | undefined
-): Promise<getNftListingsReply> {
+): Promise<GetNftListingsReply> {
   const url = new URL(
     `https://api.opensea.io//api/v2/orders/ethereum/seaport/listings`
   );

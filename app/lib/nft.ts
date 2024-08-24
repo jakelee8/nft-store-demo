@@ -9,12 +9,6 @@ export interface Nft {
   openSeaUrl: string;
 }
 
-export interface getNftListingsReply {
-  items: Nft[];
-  nextPageToken?: string | undefined;
-  prevPageToken?: string | undefined;
-}
-
 export function nftKey(nft: Nft) {
   return `${nft.chain}/${nft.token}/${nft.identifier}`;
 }

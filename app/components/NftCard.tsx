@@ -13,7 +13,7 @@ const NftCard: FC<{
       <img
         src={nft.imageUrl}
         alt={nft.name}
-        className="w-full h-48 object-cover mb-2"
+        class="w-full h-48 object-cover mb-2"
       />
     </figure>
     <div class="card-body">

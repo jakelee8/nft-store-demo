@@ -1,12 +1,13 @@
+import { baseUrl as defaultBaseUrl } from "./baseurl";
 import { Nft, nftKey } from "./nft";
 
 export class Cart {
   public readonly nftKeys: ReadonlySet<string>;
 
   constructor(
-    public readonly baseUrl: string,
     public readonly nfts: ReadonlyArray<Nft> = [],
-    nftKeys?: ReadonlySet<string>
+    nftKeys?: ReadonlySet<string>,
+    public readonly baseUrl: string = defaultBaseUrl
   ) {
     this.nftKeys = nftKeys || new Set(nfts.map(nftKey));
   }
@@ -27,9 +28,9 @@ export class Cart {
     });
 
     const cart = new Cart(
-      this.baseUrl,
       [...this.nfts, nft],
-      this.nftKeys.union(new Set([key]))
+      this.nftKeys.union(new Set([key])),
+      this.baseUrl
     );
 
     return cart;
@@ -57,9 +58,9 @@ export class Cart {
     });
 
     return new Cart(
-      this.baseUrl,
       this.nfts.filter((nft) => nftKey(nft) !== key),
-      this.nftKeys.difference(new Set([key]))
+      this.nftKeys.difference(new Set([key])),
+      this.baseUrl
     );
   }
 

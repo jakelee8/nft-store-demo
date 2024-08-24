@@ -20,7 +20,7 @@ const CartSidebar: FC<{
                   <img
                     src={nft.imageUrl}
                     alt={nft.name}
-                    className="w-24 h-24 object-cover"
+                    class="w-24 h-24 object-cover"
                   />
                 </figure>
               </div>
