@@ -20,13 +20,14 @@ const NftStore: FC<{
     <div class="drawer drawer-end">
       <input id={sidebarId} type="checkbox" class="drawer-toggle" />
       <div class="drawer-content">
-        <Navbar sidebarId={sidebarId} />
+        <Navbar sidebarId={sidebarId} cart={cart} />
         <main className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {listings.map((nft) => (
               <NftCard
                 key={nftKey(nft)}
                 nft={nft}
+                inCart={cart.hasNft(nft)}
                 addToCart={() =>
                   setCart((currentCart) => currentCart.addNft(nft))
                 }
