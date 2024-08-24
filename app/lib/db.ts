@@ -1,8 +1,9 @@
+import { Result } from "postcss";
 import { Nft } from "./nft";
 
 export interface Cart {
   id: string;
-  items: NftId;
+  nfts: Nft;
 }
 
 export type NftId = Pick<Nft, "chain" | "token" | "identifier">;
@@ -27,22 +28,30 @@ export async function createCart(
   id: string = crypto.randomUUID()
 ) {
   await db.prepare("INSERT INTO carts (id) VALUES (?)").bind(id).run();
+  return id;
 }
 
 export async function getCartNfts(db: D1Database, cartId: string) {
-  const nfts = await db
-    .prepare("SELECT * FROM cart_nfts WHERE cart_id = ?")
+  const result = await db
+    .prepare("SELECT data FROM cart_nfts WHERE cart_id = ?")
     .bind(cartId)
     .all<DbCartNft>();
-  return nfts;
+
+  if (result.error) {
+    throw new Error(result.error);
+  }
+
+  return result.results
+    .map(({ data }) => data && JSON.parse(data))
+    .filter(Boolean);
 }
 
-export async function addNftToCart(db: D1Database, cartId: string, nft: NftId) {
+export async function addNftToCart(db: D1Database, cartId: string, nft: Nft) {
   await db
     .prepare(
-      "INSERT INTO cart_nfts (cart_id, chain, token, identifier) VALUES (?, ?, ?, ?) ON CONFLICT DO NOTHING"
+      "INSERT INTO cart_nfts (cart_id, chain, token, identifier, data) VALUES (?, ?, ?, ?, ?) ON CONFLICT DO NOTHING"
     )
-    .bind(cartId, nft.chain, nft.token, nft.identifier)
+    .bind(cartId, nft.chain, nft.token, nft.identifier, JSON.stringify(nft))
     .run();
 }
 
