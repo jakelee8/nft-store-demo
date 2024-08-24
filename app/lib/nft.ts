@@ -13,3 +13,7 @@ export interface FetchNftCollectionReply {
   items: Nft[];
   nextPageToken?: string | undefined;
 }
+
+export function nftKey(nft: Nft) {
+  return `${nft.chain}/${nft.token}/${nft.identifier}`;
+}

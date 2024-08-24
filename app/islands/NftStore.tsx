@@ -4,19 +4,15 @@ import Navbar from "./Navbar";
 import NftCard from "../components/NftCard";
 import CartSidebar from "./CartSidebar";
 
-import { FetchNftCollectionReply, Nft } from "../lib/nft";
+import { Nft, nftKey } from "../lib/nft";
+import { Cart } from "../lib/cart";
 
-const NftStore: FC<{ initialNfts: FetchNftCollectionReply }> = ({
-  initialNfts,
-}) => {
-  const [cartItems, setCartItems] = useState<Nft[]>([]);
+const NftStore: FC<{
+  listings: Nft[];
+  cart: Cart;
+  setCart: (newCart: Cart | ((currentCart: Cart) => Cart)) => void;
+}> = ({ listings, cart, setCart }) => {
   const [currentPage, setCurrentPage] = useState(0);
-
-  const addToCart = (nft: Nft) => {
-    setCartItems([...cartItems, nft]);
-  };
-
-  const { items: nfts } = initialNfts;
 
   const sidebarId = "cart-sidebar";
 
@@ -27,11 +23,13 @@ const NftStore: FC<{ initialNfts: FetchNftCollectionReply }> = ({
         <Navbar sidebarId={sidebarId} />
         <main className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {nfts.map((nft) => (
+            {listings.map((nft) => (
               <NftCard
-                key={`${nft.chain}/${nft.token}/${nft.identifier}`}
+                key={nftKey(nft)}
                 nft={nft}
-                addToCart={addToCart}
+                addToCart={() =>
+                  setCart((currentCart) => currentCart.addNft(nft))
+                }
               />
             ))}
           </div>
@@ -66,7 +64,7 @@ const NftStore: FC<{ initialNfts: FetchNftCollectionReply }> = ({
           class="drawer-overlay"
         ></label>
         <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-          <CartSidebar cartItems={cartItems} />
+          <CartSidebar cart={cart} setCart={setCart} />
         </ul>
       </div>
     </div>

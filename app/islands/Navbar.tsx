@@ -26,13 +26,7 @@ const Navbar: FC<{
             </div>
           </label>
         ) : (
-          <div
-            onClick={() => {
-              setIsConnected(true);
-              console.log("hi");
-            }}
-            class="btn btn-ghost"
-          >
+          <div onClick={() => setIsConnected(true)} class="btn btn-ghost">
             <span class="icon-[lucide--wallet]"></span> Connect Wallet
           </div>
         )}
