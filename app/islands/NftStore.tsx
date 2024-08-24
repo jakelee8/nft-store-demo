@@ -4,6 +4,7 @@ import { FC, useState } from "hono/jsx";
 
 import Navbar from "./Navbar";
 import NftCard, { Nft } from "../components/NftCard";
+import CartSidebar from "./CartSidebar";
 
 // Mock NFT data
 const nfts: Nft[] = Array.from({ length: 50 }, (_, i) => ({
@@ -69,7 +70,7 @@ const NftStore: FC = () => {
           class="drawer-overlay"
         ></label>
         <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-          Cart Items
+          <CartSidebar cartItems={cartItems} />
         </ul>
       </div>
     </div>
