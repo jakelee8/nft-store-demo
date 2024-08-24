@@ -9,9 +9,10 @@ export interface Nft {
   openSeaUrl: string;
 }
 
-export interface FetchNftCollectionReply {
+export interface getNftListingsReply {
   items: Nft[];
   nextPageToken?: string | undefined;
+  prevPageToken?: string | undefined;
 }
 
 export function nftKey(nft: Nft) {

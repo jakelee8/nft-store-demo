@@ -1,63 +1,62 @@
 import { Context } from "hono";
 import { env } from "hono/adapter";
 
-import { FetchNftCollectionReply, Nft } from "../lib/nft";
+import { getNftListingsReply } from "../lib/nft";
 
-export async function fetchNftCollection(
+export async function getNftListings(
   c: Context,
-  slug: string,
   limit?: number | undefined,
   pageToken?: string | undefined
-): Promise<FetchNftCollectionReply> {
-  const { listings, next } = await getCollectionBestListings(
-    c,
-    slug,
-    limit,
-    pageToken
+): Promise<getNftListingsReply> {
+  const url = new URL(
+    `https://api.opensea.io//api/v2/orders/ethereum/seaport/listings`
   );
+  url.searchParams.append("limit", limit ? limit.toString() : "12");
+  if (pageToken) url.searchParams.append("cursor", pageToken.toString());
 
-  // Don't use non-cancellable Promises for each NFT to avoid DoS the server
-  const items: Nft[] = [];
-  const nfts: { [id: string]: Nft } = {};
-  for (const listing of listings) {
-    const {
+  const { next, previous, orders } = await fetchOpenSea(c, url);
+  const items = orders.map(
+    ({
+      current_price: value,
+      maker_asset_bundle: {
+        assets: [
+          {
+            token_id: identifier,
+            image_url: imageUrl,
+            name: tokenName,
+            asset_contract: {
+              address: token,
+              chain_identifier: chain,
+              name: collectionName,
+            },
+            permalink: openSeaUrl,
+          },
+        ],
+      },
+      taker_asset_bundle: {
+        assets: [
+          {
+            asset_contract: { symbol: currency },
+            decimals,
+          },
+        ],
+      },
+    }: any) => ({
       chain,
-      price: {
-        current: { currency: currencySymbol, decimals, value },
-      },
-      protocol_data: {
-        parameters: {
-          offer: [{ token, identifierOrCriteria: identifier }],
-        },
-      },
-    } = listing;
-
-    const currency = toCurrency(currencySymbol, value, decimals);
-
-    const id = `${chain}/${token}/${identifier}`;
-    if (id in nfts) {
-      items.push({ ...nfts[id], currency });
-    } else {
-      const result = await getNft(c, chain, token, identifier);
-      const {
-        nft: { name, image_url, opensea_url },
-      } = result;
-      items.push({
-        chain,
-        token,
-        identifier,
-        name,
-        price: parseInt(value) / Math.pow(10, decimals),
-        currency,
-        imageUrl: image_url,
-        openSeaUrl: opensea_url,
-      });
-    }
-  }
+      token,
+      identifier,
+      name: `${collectionName} ${tokenName}`,
+      price: parseInt(value) / Math.pow(10, decimals),
+      currency: toCurrency(currency, value, decimals),
+      imageUrl,
+      openSeaUrl,
+    })
+  );
 
   return {
     items,
     nextPageToken: next,
+    prevPageToken: previous,
   };
 }
 
@@ -73,34 +72,6 @@ async function fetchOpenSea(c: Context, url: URL): Promise<any> {
   }
 
   return await response.json();
-}
-
-async function getCollectionBestListings(
-  c: Context,
-  slug: string,
-  limit?: number | undefined,
-  pageToken?: string | undefined
-): Promise<any> {
-  const url = new URL(
-    `https://api.opensea.io/api/v2/listings/collection/${encodeURIComponent(slug)}/best`
-  );
-  url.searchParams.append("limit", limit ? limit.toString() : "12");
-  if (pageToken) url.searchParams.append("next", pageToken.toString());
-
-  return await fetchOpenSea(c, url);
-}
-
-async function getNft(
-  c: Context,
-  chain: string,
-  address: string,
-  identifier: string
-): Promise<any> {
-  const url = new URL(
-    `https://api.opensea.io/api/v2/chain/${encodeURIComponent(chain)}/contract/${encodeURIComponent(address)}/nfts/${encodeURIComponent(identifier)}`
-  );
-
-  return await fetchOpenSea(c, url);
 }
 
 function toCurrency(currency: string, value: string, decimals: number): string {
