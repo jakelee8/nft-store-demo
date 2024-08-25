@@ -10,8 +10,8 @@ export default app;
 
 app.get("/", async (c: Context) => {
   const cartid = await getCartId(c);
-  const cartNfts = await getCartNfts(c.env.DB, cartid);
-  return c.json({ cartNfts });
+  const nfts = await getCartNfts(c.env.DB, cartid);
+  return c.json({ nfts });
 });
 
 app.post(

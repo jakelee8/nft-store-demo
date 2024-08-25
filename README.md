@@ -59,7 +59,7 @@ This project uses a DevContainer for the development environment.
 4. Apply the Cloudflare D1 database schema:
 
    ```sh
-   npx wrangler d1 execute nft-store --local --file schema.sql
+   npx wrangler d1 execute nft-store --local --file migrations/0000_initial.sql
    ```
 
 5. Start the development server:
@@ -82,7 +82,6 @@ This project uses a DevContainer for the development environment.
 
 Key configuration options:
 
-- `DATABASE_URL`: PostgreSQL connection string (backend)
 - `OPENSEA_API_KEY`: Your OpenSea API key (backend)
 
 Refer to `.dev.vars.example` files for all available options.

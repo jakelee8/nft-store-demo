@@ -15,8 +15,6 @@ export default createRoute(
         return c.json({ error: result.error });
       }
 
-      result.data.pageToken;
-
       const listings = await getListings(c, undefined, result.data.pageToken);
 
       return c.json(listings);
