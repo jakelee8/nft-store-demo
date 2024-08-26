@@ -60,6 +60,33 @@ export async function getListings(
   };
 }
 
+export async function getCollections(
+  c: Context,
+  limit?: number | undefined,
+  pageToken?: string | undefined
+): Promise<GetNftListingsReply> {
+  const url = new URL(`https://api.opensea.io/api/v2/collections`);
+  url.searchParams.append("chain", "ethereum");
+  url.searchParams.append("order_by", "market_cap");
+  url.searchParams.append("limit", limit ? limit.toString() : "12");
+  if (pageToken) url.searchParams.append("cursor", pageToken.toString());
+
+  const { next, collections } = await fetchOpenSea(c, url);
+  const items = collections.map(
+    ({ collection: slug, name, description, image_url: imageUrl }: any) => ({
+      slug,
+      name,
+      description,
+      imageUrl,
+    })
+  );
+
+  return {
+    items,
+    nextPageToken: next,
+  };
+}
+
 async function fetchOpenSea(c: Context, url: URL): Promise<any> {
   const { OPENSEA_API_KEY } = env(c);
 
